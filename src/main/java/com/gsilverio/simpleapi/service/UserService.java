@@ -3,7 +3,6 @@ package com.gsilverio.simpleapi.service;
 import com.gsilverio.simpleapi.model.Book;
 import com.gsilverio.simpleapi.model.User;
 import com.gsilverio.simpleapi.repository.UserRepository;
-import io.jsonwebtoken.security.Password;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
