@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: simple-api
+
+  mvc:
+    problemdetails:
+      enabled: true
+
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=SimpleDb;encrypt=true;trustServerCertificate=true;
+    username: sa
+    password: admin@123
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        format_sql: true
+
+springdoc:
+  swagger-ui:
+    doc-expansion: none
+    filter: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+api:
+  security:
+    token:
+      secret: "SuaChaveSecretaMuitoLongaEComplicadaParaOJWTNaoSerQuebrado12345!"
+      expiration: 900000
+      refresh-expiration: 604800000

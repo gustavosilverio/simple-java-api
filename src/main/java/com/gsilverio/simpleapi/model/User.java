@@ -1,0 +1,59 @@
+package com.gsilverio.simpleapi.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.jspecify.annotations.Nullable;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "[User]")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
+    private Integer id;
+
+    @NotBlank
+    @Column(name = "Name")
+    private String name;
+
+    @NotNull
+    @Column(name = "Age")
+    private Integer age;
+
+    @NotBlank
+    @Column(name = "Email")
+    private String email;
+
+    @NotBlank
+    @Column(name = "Password")
+    private String password;
+
+    @CreationTimestamp
+    @Column(name = "CreatedAt")
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "UpdatedAt")
+    private LocalDateTime updatedAt;
+
+    @ManyToMany
+    @JoinTable(
+        name = "UserBook",
+        joinColumns = @JoinColumn(name = "UserId"),
+        inverseJoinColumns = @JoinColumn(name = "BookId")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Book> books;
+}
