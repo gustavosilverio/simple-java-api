@@ -4,7 +4,7 @@ spring:
 
   mvc:
     problemdetails:
-      enabled: true
+      enabled: false
 
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=SimpleDb;encrypt=true;trustServerCertificate=true;
