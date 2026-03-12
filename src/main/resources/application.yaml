@@ -6,6 +6,9 @@ spring:
     problemdetails:
       enabled: false
 
+  jackson:
+    default-property-inclusion: non_null
+
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=SimpleDb;encrypt=true;trustServerCertificate=true;
     username: sa

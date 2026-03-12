@@ -1,5 +1,6 @@
 package com.gsilverio.simpleapi.config;
 
+import com.gsilverio.simpleapi.model.dto.response.config.ApiResponse;
 import com.gsilverio.simpleapi.security.TokenAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import tools.jackson.databind.ObjectMapper;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +27,9 @@ public class SecurityConfig {
     @Autowired
     private TokenAuthenticationFilter tokenAuthFilter;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -30,7 +37,16 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "access not authorized: invalid or token not sent");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+
+                            ApiResponse<Void> apiResponse = ApiResponse.error(
+                                List.of("access not authorized: invalid token or token not sent"),
+                        "authentication failed"
+                            );
+
+                            response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
                         })))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error").permitAll()

@@ -1,8 +1,7 @@
 package com.gsilverio.simpleapi.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -26,10 +25,12 @@ public class User {
     private String name;
 
     @NotNull
+    @Positive
     @Column(name = "Age")
     private Integer age;
 
     @NotBlank
+    @Email
     @Column(name = "Email")
     private String email;
 

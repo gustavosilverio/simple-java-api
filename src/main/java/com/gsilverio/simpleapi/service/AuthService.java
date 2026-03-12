@@ -1,31 +1,27 @@
 package com.gsilverio.simpleapi.service;
 
 import com.gsilverio.simpleapi.model.User;
-import com.gsilverio.simpleapi.model.dto.request.LoginRequest;
-import com.gsilverio.simpleapi.model.dto.request.RefreshTokenRequest;
-import com.gsilverio.simpleapi.model.dto.response.AuthResponse;
+import com.gsilverio.simpleapi.model.dto.request.auth.LoginRequest;
+import com.gsilverio.simpleapi.model.dto.request.auth.RefreshTokenRequest;
+import com.gsilverio.simpleapi.model.dto.response.auth.AuthResponse;
 import com.gsilverio.simpleapi.security.TokenService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
+@RequiredArgsConstructor
 @Service
 public class AuthService {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     public AuthResponse login(LoginRequest request){
-        User user = userService.findByEmail(request.email());
+        User user = userService.findUserByEmail(request.email());
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid credentials");
@@ -37,8 +33,7 @@ public class AuthService {
         return new AuthResponse(accessToken, refreshToken);
     }
 
-    @PostMapping("refresh-token")
-    public AuthResponse refreshToken(@RequestBody RefreshTokenRequest request){
+    public AuthResponse refreshToken(RefreshTokenRequest request){
         String token = request.refreshToken();
 
         if (!tokenService.isTokenValid(token))

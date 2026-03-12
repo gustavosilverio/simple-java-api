@@ -1,9 +1,9 @@
 package com.gsilverio.simpleapi.controller;
 
-import com.gsilverio.simpleapi.model.dto.request.LoginRequest;
-import com.gsilverio.simpleapi.model.dto.request.RefreshTokenRequest;
-import com.gsilverio.simpleapi.model.dto.response.ApiResponse;
-import com.gsilverio.simpleapi.model.dto.response.AuthResponse;
+import com.gsilverio.simpleapi.model.dto.request.auth.LoginRequest;
+import com.gsilverio.simpleapi.model.dto.request.auth.RefreshTokenRequest;
+import com.gsilverio.simpleapi.model.dto.response.config.ApiResponse;
+import com.gsilverio.simpleapi.model.dto.response.auth.AuthResponse;
 import com.gsilverio.simpleapi.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

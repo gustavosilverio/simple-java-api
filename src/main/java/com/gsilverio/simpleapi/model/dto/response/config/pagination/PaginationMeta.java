@@ -1,4 +1,4 @@
-package com.gsilverio.simpleapi.model.dto.response.pagination;
+package com.gsilverio.simpleapi.model.dto.response.config.pagination;
 
 public record PaginationMeta(
         int page,

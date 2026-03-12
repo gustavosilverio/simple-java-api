@@ -1,7 +1,8 @@
 package com.gsilverio.simpleapi.controller;
 
-import com.gsilverio.simpleapi.model.Book;
-import com.gsilverio.simpleapi.model.dto.response.ApiResponse;
+import com.gsilverio.simpleapi.model.dto.request.book.BookRequest;
+import com.gsilverio.simpleapi.model.dto.response.book.BookResponse;
+import com.gsilverio.simpleapi.model.dto.response.config.ApiResponse;
 import com.gsilverio.simpleapi.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,15 +22,15 @@ public class BookController {
 
     @Operation(summary = "list all books", description = "return a list of all the books")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Book>>> listAll() {
+    public ResponseEntity<ApiResponse<List<BookResponse>>> listAll() {
         var books = service.listAll();
         return ResponseEntity.ok(ApiResponse.success(books));
     }
 
     @Operation(summary = "create a new book", description = "insert a new record of a book in the library")
     @PostMapping
-    public ResponseEntity<ApiResponse<Book>> create(@Valid @RequestBody Book book){
-        var createdBook = service.create(book);
+    public ResponseEntity<ApiResponse<BookResponse>> create(@Valid @RequestBody BookRequest request){
+        var createdBook = service.create(request);
         return ResponseEntity.ok(ApiResponse.success(createdBook));
     }
 }
