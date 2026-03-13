@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
     @EntityGraph(attributePaths = "users")
-    @Query("SELECT b FROM b")
+    @Query("SELECT b FROM Book b")
     List<Book> findAllWithUsers();
 }
