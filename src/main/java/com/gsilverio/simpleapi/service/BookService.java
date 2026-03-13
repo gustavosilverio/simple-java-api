@@ -28,7 +28,6 @@ public class BookService {
                 book.getId(),
                 book.getName(),
                 book.getDescription(),
-                book.getUsers(),
                 book.getCreatedAt(),
                 book.getUpdatedAt()
         );

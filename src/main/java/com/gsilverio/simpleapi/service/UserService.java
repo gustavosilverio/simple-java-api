@@ -3,6 +3,7 @@ package com.gsilverio.simpleapi.service;
 import com.gsilverio.simpleapi.model.Book;
 import com.gsilverio.simpleapi.model.User;
 import com.gsilverio.simpleapi.model.dto.request.user.UserRequest;
+import com.gsilverio.simpleapi.model.dto.response.book.BookSummaryResponse;
 import com.gsilverio.simpleapi.model.dto.response.user.UserResponse;
 import com.gsilverio.simpleapi.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -31,12 +32,18 @@ public class UserService {
     }
 
     private UserResponse userToUserResponse(User user) {
+        List<BookSummaryResponse> bookSummaries = user.getBooks() != null
+                ? user.getBooks().stream()
+                    .map(b -> new BookSummaryResponse(b.getId(), b.getName(), b.getDescription()))
+                    .toList()
+                : List.of();
+
         return new UserResponse(
                 user.getId(),
                 user.getName(),
                 user.getAge(),
                 user.getEmail(),
-                user.getBooks(), // TODO: Para cada usuário será feito uma query para obter seus livros, ajustar
+                bookSummaries,
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
