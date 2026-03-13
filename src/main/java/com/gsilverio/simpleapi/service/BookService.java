@@ -34,7 +34,7 @@ public class BookService {
     }
 
     public List<BookResponse> listAll() {
-        return repository.findAll()
+        return repository.findAllWithUsers()
                 .stream().map(this::bookToBookResponse).toList();
     }
 

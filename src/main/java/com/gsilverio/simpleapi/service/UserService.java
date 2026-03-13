@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -32,11 +34,11 @@ public class UserService {
     }
 
     private UserResponse userToUserResponse(User user) {
-        List<BookSummaryResponse> bookSummaries = user.getBooks() != null
+        Set<BookSummaryResponse> bookSummaries = user.getBooks() != null
                 ? user.getBooks().stream()
                     .map(b -> new BookSummaryResponse(b.getId(), b.getName(), b.getDescription()))
-                    .toList()
-                : List.of();
+                    .collect(Collectors.toSet())
+                : Set.of();
 
         return new UserResponse(
                 user.getId(),
@@ -56,7 +58,7 @@ public class UserService {
     }
 
     public List<UserResponse> listAll() {
-        return repository.findAll().stream()
+        return repository.findAllWithBooks().stream()
                 .map(this::userToUserResponse).toList();
     }
 
@@ -92,9 +94,7 @@ public class UserService {
         User user = findUserById(userId);
         Book book = bookService.findBookById(bookId);
 
-        if (!user.getBooks().contains(book)) {
-            user.getBooks().add(book);
-        }
+        user.getBooks().add(book);
 
         User savedUser = repository.save(user);
 

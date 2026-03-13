@@ -9,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -54,5 +54,5 @@ public class User {
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<Book> books;
+    private Set<Book> books;
 }
