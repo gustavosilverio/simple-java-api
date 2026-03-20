@@ -1,45 +1,32 @@
 package com.gsilverio.simpleapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import com.gsilverio.simpleapi.model.config.Auditable;
+import lombok.*;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Book")
-public class Book {
+public class Book extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
     private Integer id;
 
-    @NotBlank
-    @Column(name = "Name")
-    private String name;
+    @Column(nullable = false)
+    private String title;
 
-    @NotBlank
-    @Column(name = "Description")
-    private String description;
+    @Column(nullable = false)
+    private String author;
 
-    @CreationTimestamp
-    @Column(name = "CreatedAt")
-    private LocalDateTime createdAt;
+    @Column(nullable = false, length = 13)
+    private String isbn;
 
-    @UpdateTimestamp
-    @Column(name = "UpdatedAt")
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private Short publicationYear;
 
-    @ManyToMany(mappedBy = "books")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    private Set<User> users;
+    @Column(nullable = false)
+    private Integer availableUnits = 0;
+
+    private String category;
 }

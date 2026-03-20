@@ -33,11 +33,4 @@ public class UserController {
         var createdUser = service.create(request);
         return ResponseEntity.ok(ApiResponse.success(createdUser));
     }
-
-    @Operation(summary = "add a book to a user", description = "insert a new record of a book that a user took in the system")
-    @PostMapping("/{userId}/books/{bookId}")
-    public ResponseEntity<ApiResponse<UserResponse>> addBook(@PathVariable Integer userId, @PathVariable Integer bookId){
-        var user = service.addBookToUser(userId, bookId);
-        return ResponseEntity.ok(ApiResponse.success(user));
-    }
 }

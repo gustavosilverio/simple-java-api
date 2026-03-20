@@ -1,9 +1,7 @@
 package com.gsilverio.simpleapi.service;
 
-import com.gsilverio.simpleapi.model.Book;
 import com.gsilverio.simpleapi.model.User;
 import com.gsilverio.simpleapi.model.dto.request.user.UserRequest;
-import com.gsilverio.simpleapi.model.dto.response.book.BookSummaryResponse;
 import com.gsilverio.simpleapi.model.dto.response.user.UserResponse;
 import com.gsilverio.simpleapi.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -14,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -23,29 +19,15 @@ public class UserService {
 
     private final UserRepository repository;
 
-    private final BookService bookService;
-
     private final PasswordEncoder passwordEncoder;
 
     //region private methods
-    private User findUserById(Integer id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found with id: " + id));
-    }
-
     private UserResponse userToUserResponse(User user) {
-        Set<BookSummaryResponse> bookSummaries = user.getBooks() != null
-                ? user.getBooks().stream()
-                    .map(b -> new BookSummaryResponse(b.getId(), b.getName(), b.getDescription()))
-                    .collect(Collectors.toSet())
-                : Set.of();
-
         return new UserResponse(
                 user.getId(),
                 user.getName(),
                 user.getAge(),
                 user.getEmail(),
-                bookSummaries,
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
@@ -58,18 +40,8 @@ public class UserService {
     }
 
     public List<UserResponse> listAll() {
-        return repository.findAllWithBooks().stream()
+        return repository.findAll().stream()
                 .map(this::userToUserResponse).toList();
-    }
-
-    public UserResponse findById(Integer id) {
-        User user = findUserById(id);
-        return userToUserResponse(user);
-    }
-
-    public UserResponse findByEmail(String email){
-        User user = findUserByEmail(email);
-        return userToUserResponse(user);
     }
 
     @Transactional
@@ -87,17 +59,5 @@ public class UserService {
 
         User createdUser = repository.save(user);
         return userToUserResponse(createdUser);
-    }
-
-    @Transactional
-    public UserResponse addBookToUser(Integer userId, Integer bookId){
-        User user = findUserById(userId);
-        Book book = bookService.findBookById(bookId);
-
-        user.getBooks().add(book);
-
-        User savedUser = repository.save(user);
-
-        return userToUserResponse(savedUser);
     }
 }

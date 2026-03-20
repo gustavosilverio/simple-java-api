@@ -1,58 +1,31 @@
 package com.gsilverio.simpleapi.model;
 
+import com.gsilverio.simpleapi.model.config.Auditable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "[User]")
-public class User {
+public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
     private Integer id;
 
-    @NotBlank
-    @Column(name = "Name")
+    @Column(nullable = false)
     private String name;
 
-    @NotNull
     @Positive
-    @Column(name = "Age")
+    @Column(nullable = false)
     private Integer age;
 
-    @NotBlank
     @Email
-    @Column(name = "Email")
+    @Column(nullable = false)
     private String email;
 
-    @NotBlank
-    @Column(name = "Password")
+    @Column(nullable = false, length = 500)
     private String password;
-
-    @CreationTimestamp
-    @Column(name = "CreatedAt")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "UpdatedAt")
-    private LocalDateTime updatedAt;
-
-    @ManyToMany
-    @JoinTable(
-        name = "UserBook",
-        joinColumns = @JoinColumn(name = "UserId"),
-        inverseJoinColumns = @JoinColumn(name = "BookId")
-    )
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<Book> books;
 }
