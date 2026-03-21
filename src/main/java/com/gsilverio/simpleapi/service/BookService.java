@@ -5,9 +5,10 @@ import com.gsilverio.simpleapi.model.dto.request.book.BookRequest;
 import com.gsilverio.simpleapi.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -15,8 +16,9 @@ public class BookService {
 
     private final BookRepository repository;
 
-    public List<Book> listAll() {
-        return repository.findAll();
+    public Page<Book> listAll(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return repository.findAll(pageable);
     }
 
     @Transactional

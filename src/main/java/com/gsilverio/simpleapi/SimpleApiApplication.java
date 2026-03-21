@@ -12,5 +12,4 @@ public class SimpleApiApplication {
         Locale.setDefault(Locale.ENGLISH);
         SpringApplication.run(SimpleApiApplication.class, args);
     }
-
 }

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,8 @@ public class BookController {
 
     @Operation(summary = "list all books", description = "return a list of all the books")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Book>>> listAll() {
-        var books = service.listAll();
+    public ResponseEntity<ApiResponse<Page<Book>>> listAll(@RequestParam int page, @RequestParam int pageSize) {
+        var books = service.listAll(page, pageSize);
         return ResponseEntity.ok(ApiResponse.success(books));
     }
 
