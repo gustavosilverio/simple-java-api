@@ -41,7 +41,7 @@ public class BookController {
     @Operation(summary = "create a new book", description = "insert a new record of a book in the library")
     @PostMapping
     public ResponseEntity<ApiResponse<Book>> create(@Valid @RequestBody BookRequest request){
-        var createdBook = service.create(request);
+        var createdBook = service.save(request);
         return ResponseEntity.ok(ApiResponse.success(createdBook));
     }
 }

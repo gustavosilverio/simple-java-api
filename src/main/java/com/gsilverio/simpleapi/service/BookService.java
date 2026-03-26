@@ -34,7 +34,7 @@ public class BookService {
     }
 
     @Transactional
-    public Book create(BookRequest request){
+    public Book save(BookRequest request){
         Book book = new Book();
 
         var createdBook = getByIsbn(request.isbn());

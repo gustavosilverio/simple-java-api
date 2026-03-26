@@ -28,6 +28,6 @@ public class Loan extends Auditable {
     @Column(nullable = false)
     private LocalDate expectedReturnDate;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime actualReturnDate;
 }

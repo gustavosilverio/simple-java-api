@@ -1,5 +1,7 @@
 package com.gsilverio.simpleapi.controller;
 
+import com.gsilverio.simpleapi.model.Loan;
+import com.gsilverio.simpleapi.model.dto.request.user.LoanBookUserRequest;
 import com.gsilverio.simpleapi.model.dto.request.user.UserRequest;
 import com.gsilverio.simpleapi.model.dto.response.config.ApiResponse;
 import com.gsilverio.simpleapi.model.dto.response.user.UserResponse;
@@ -30,7 +32,14 @@ public class UserController {
     @Operation(summary = "create a new user", description = "insert a new record of a user in the system")
     @PostMapping
     public ResponseEntity<ApiResponse<UserResponse>> create(@Valid @RequestBody UserRequest request){
-        var createdUser = service.create(request);
+        var createdUser = service.save(request);
         return ResponseEntity.ok(ApiResponse.success(createdUser));
+    }
+
+    @Operation(summary = "loan a book", description = "create a record of a loan in the system")
+    @PostMapping("loan-book")
+    public ResponseEntity<ApiResponse<Loan>> loanBook(@Valid @RequestBody LoanBookUserRequest request){
+        var createdLoan = service.loanBook(request);
+        return ResponseEntity.ok(ApiResponse.success(createdLoan));
     }
 }
