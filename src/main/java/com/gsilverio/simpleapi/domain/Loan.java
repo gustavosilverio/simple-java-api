@@ -1,6 +1,6 @@
-package com.gsilverio.simpleapi.model;
+package com.gsilverio.simpleapi.domain;
 
-import com.gsilverio.simpleapi.model.config.Auditable;
+import com.gsilverio.simpleapi.domain.config.Auditable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "Loan")
 public class Loan extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +27,5 @@ public class Loan extends Auditable {
     @Column(nullable = false)
     private LocalDate expectedReturnDate;
 
-    @Column(nullable = true)
     private LocalDateTime actualReturnDate;
 }

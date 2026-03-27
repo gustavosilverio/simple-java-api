@@ -1,6 +1,6 @@
-package com.gsilverio.simpleapi.model.dto.response.config;
+package com.gsilverio.simpleapi.domain.dto.config;
 
-import com.gsilverio.simpleapi.model.dto.response.config.pagination.PaginationMeta;
+import com.gsilverio.simpleapi.domain.dto.config.pagination.PaginationMeta;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 

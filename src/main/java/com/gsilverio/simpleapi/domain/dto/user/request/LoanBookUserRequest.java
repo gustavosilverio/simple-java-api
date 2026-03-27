@@ -1,4 +1,4 @@
-package com.gsilverio.simpleapi.model.dto.request.user;
+package com.gsilverio.simpleapi.domain.dto.user.request;
 
 import jakarta.validation.constraints.Positive;
 

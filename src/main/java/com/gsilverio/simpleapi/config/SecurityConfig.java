@@ -1,6 +1,6 @@
 package com.gsilverio.simpleapi.config;
 
-import com.gsilverio.simpleapi.model.dto.response.config.ApiResponse;
+import com.gsilverio.simpleapi.domain.dto.config.ApiResponse;
 import com.gsilverio.simpleapi.security.TokenAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

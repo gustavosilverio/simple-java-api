@@ -1,4 +1,4 @@
-package com.gsilverio.simpleapi.model.config;
+package com.gsilverio.simpleapi.domain.config;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

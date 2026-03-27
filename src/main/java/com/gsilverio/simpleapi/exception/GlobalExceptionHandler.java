@@ -1,6 +1,6 @@
 package com.gsilverio.simpleapi.exception;
 
-import com.gsilverio.simpleapi.model.dto.response.config.ApiResponse;
+import com.gsilverio.simpleapi.domain.dto.config.ApiResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

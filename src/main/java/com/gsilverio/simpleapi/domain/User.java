@@ -1,8 +1,7 @@
-package com.gsilverio.simpleapi.model;
+package com.gsilverio.simpleapi.domain;
 
-import com.gsilverio.simpleapi.model.config.Auditable;
+import com.gsilverio.simpleapi.domain.config.Auditable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,11 +17,9 @@ public class User extends Auditable {
     @Column(nullable = false)
     private String name;
 
-    @Positive
     @Column(nullable = false)
     private Integer age;
 
-    @Email
     @Column(nullable = false)
     private String email;
 

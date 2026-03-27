@@ -1,4 +1,4 @@
-package com.gsilverio.simpleapi.model.dto.response.user;
+package com.gsilverio.simpleapi.domain.dto.user.response;
 
 import java.time.LocalDateTime;
 

@@ -1,9 +1,9 @@
 package com.gsilverio.simpleapi.service;
 
-import com.gsilverio.simpleapi.model.User;
-import com.gsilverio.simpleapi.model.dto.request.auth.LoginRequest;
-import com.gsilverio.simpleapi.model.dto.request.auth.RefreshTokenRequest;
-import com.gsilverio.simpleapi.model.dto.response.auth.AuthResponse;
+import com.gsilverio.simpleapi.domain.User;
+import com.gsilverio.simpleapi.domain.dto.auth.request.LoginRequest;
+import com.gsilverio.simpleapi.domain.dto.auth.request.RefreshTokenRequest;
+import com.gsilverio.simpleapi.domain.dto.auth.response.AuthResponse;
 import com.gsilverio.simpleapi.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

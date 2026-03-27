@@ -1,9 +1,9 @@
-package com.gsilverio.simpleapi.model.dto.request.book;
+package com.gsilverio.simpleapi.domain.dto.book.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record BookRequest(
+public record CreateBookRequest(
         @NotBlank
         String title,
 

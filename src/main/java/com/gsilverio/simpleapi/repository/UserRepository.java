@@ -1,6 +1,6 @@
 package com.gsilverio.simpleapi.repository;
 
-import com.gsilverio.simpleapi.model.User;
+import com.gsilverio.simpleapi.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

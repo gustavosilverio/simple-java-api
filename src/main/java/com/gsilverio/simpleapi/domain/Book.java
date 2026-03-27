@@ -1,13 +1,12 @@
-package com.gsilverio.simpleapi.model;
+package com.gsilverio.simpleapi.domain;
 
-import com.gsilverio.simpleapi.model.config.Auditable;
+import com.gsilverio.simpleapi.domain.config.Auditable;
 import lombok.*;
 import jakarta.persistence.*;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "Book")
 public class Book extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
