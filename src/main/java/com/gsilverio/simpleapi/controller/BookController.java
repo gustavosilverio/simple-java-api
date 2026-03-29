@@ -3,17 +3,15 @@ package com.gsilverio.simpleapi.controller;
 import com.gsilverio.simpleapi.domain.Book;
 import com.gsilverio.simpleapi.domain.dto.book.request.ListAllBookFilterRequest;
 import com.gsilverio.simpleapi.domain.dto.book.request.CreateBookRequest;
-import com.gsilverio.simpleapi.domain.dto.config.ApiResponse;
 import com.gsilverio.simpleapi.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,22 +22,19 @@ public class BookController {
 
     @Operation(summary = "list all books", description = "return a list of all the books")
     @GetMapping
-    public ApiResponse<List<Book>> listAll(@ParameterObject ListAllBookFilterRequest filters, @ParameterObject Pageable pageable) {
-        var books = service.listAll(filters, pageable);
-        return ApiResponse.success(books);
+    public Page<Book> listAll(@ParameterObject ListAllBookFilterRequest filters, @ParameterObject Pageable pageable) {
+        return service.listAll(filters, pageable);
     }
 
     @Operation(summary = "get book by id", description = "return a specific book")
     @GetMapping("/{bookId}")
-    public ApiResponse<Book> getById(@PathVariable int bookId) {
-        var book = service.findById(bookId);
-        return ApiResponse.success(book);
+    public Book getById(@PathVariable int bookId) {
+        return service.findById(bookId);
     }
 
     @Operation(summary = "create a new book", description = "insert a new record of a book in the library")
     @PostMapping
-    public ApiResponse<Book> create(@Valid @RequestBody CreateBookRequest request){
-        var createdBook = service.save(request);
-        return ApiResponse.success(createdBook);
+    public Book create(@Valid @RequestBody CreateBookRequest request){
+        return service.save(request);
     }
 }

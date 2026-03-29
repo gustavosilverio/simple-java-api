@@ -4,8 +4,8 @@ import com.gsilverio.simpleapi.domain.Book;
 import com.gsilverio.simpleapi.domain.Loan;
 import com.gsilverio.simpleapi.domain.User;
 import com.gsilverio.simpleapi.domain.dto.loan.request.CreateLoanRequest;
+import com.gsilverio.simpleapi.domain.dto.loan.response.CreateLoanResponse;
 import com.gsilverio.simpleapi.repository.LoanRepository;
-import com.gsilverio.simpleapi.security.CurrentUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,23 +21,26 @@ public class LoanService {
 
     private final BookService bookService;
 
-    private final CurrentUserService currentUserService;
+    private final UserService userService;
 
-    public Boolean findByUserId(Integer userId){
-        return repository.existsByUserId(userId);
+    public Boolean existsByUserIdAndBookId(Integer userId, Integer bookId){
+        return repository.existsByUserIdAndBookId(userId, bookId);
     }
 
     @Transactional
-    public Loan save(CreateLoanRequest request) {
+    public CreateLoanResponse save(CreateLoanRequest request) {
         Book book = bookService.findById(request.bookId());
 
         if (book.getAvailableUnits() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "book unavailable");
 
-        User user = currentUserService.getCurrentUser();
+        if (!userService.existsById(request.userId()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
 
-        if (findByUserId(user.getId()))
-            throw new ResponseStatusException()
+        if (existsByUserIdAndBookId(request.userId(), request.bookId()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "book already loaned to this user");
+
+        User user = userService.findById(request.userId());
 
         book.setAvailableUnits(book.getAvailableUnits() - 1);
 
@@ -46,6 +49,12 @@ public class LoanService {
         loan.setUser(user);
         loan.setExpectedReturnDate(LocalDate.now().plusDays(15));
 
-        return repository.save(loan);
+        Loan createdLoan = repository.save(loan);
+
+        return new CreateLoanResponse(
+                createdLoan.getId(),
+                createdLoan.getBook().getId(),
+                createdLoan.getUser().getId()
+        );
     }
 }

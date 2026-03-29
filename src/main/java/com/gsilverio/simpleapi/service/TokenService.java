@@ -1,4 +1,4 @@
-package com.gsilverio.simpleapi.security;
+package com.gsilverio.simpleapi.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -42,7 +42,7 @@ public class TokenService {
         try {
             Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token);
             return true;
-        } catch (Exception ex){
+        } catch (io.jsonwebtoken.JwtException | IllegalArgumentException e) {
             return false;
         }
     }

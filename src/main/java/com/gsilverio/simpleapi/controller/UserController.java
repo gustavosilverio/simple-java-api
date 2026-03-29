@@ -1,7 +1,6 @@
 package com.gsilverio.simpleapi.controller;
 
 import com.gsilverio.simpleapi.domain.dto.user.request.UserRequest;
-import com.gsilverio.simpleapi.domain.dto.config.ApiResponse;
 import com.gsilverio.simpleapi.domain.dto.user.response.UserResponse;
 import com.gsilverio.simpleapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,15 +20,13 @@ public class UserController {
 
     @Operation(summary = "list all users", description = "return a list of all the users")
     @GetMapping
-    public ApiResponse<List<UserResponse>> listAll() {
-        var users = service.listAll();
-        return ApiResponse.success(users);
+    public List<UserResponse> listAll() {
+        return service.listAll();
     }
 
     @Operation(summary = "create a new user", description = "insert a new record of a user in the system")
     @PostMapping
-    public ApiResponse<UserResponse> create(@Valid @RequestBody UserRequest request){
-        var createdUser = service.save(request);
-        return ApiResponse.success(createdUser);
+    public UserResponse create(@Valid @RequestBody UserRequest request){
+        return service.save(request);
     }
 }
