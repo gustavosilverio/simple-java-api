@@ -1,4 +1,4 @@
-package com.gsilverio.simpleapi.service;
+package com.gsilverio.simpleapi.service.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -36,6 +36,9 @@ public class CustomResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         if (body instanceof Page<?> page)
             return ApiResponse.success(page);
 
+        if (returnType.getParameterType().equals(Void.TYPE) || body == null)
+            return null;
+
         if (body instanceof String){
             try {
                 return objectMapper.writeValueAsString(ApiResponse.success(body));

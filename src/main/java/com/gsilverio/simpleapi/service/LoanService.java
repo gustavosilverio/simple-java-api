@@ -4,6 +4,7 @@ import com.gsilverio.simpleapi.domain.Book;
 import com.gsilverio.simpleapi.domain.Loan;
 import com.gsilverio.simpleapi.domain.User;
 import com.gsilverio.simpleapi.domain.dto.loan.request.CreateLoanRequest;
+import com.gsilverio.simpleapi.domain.dto.loan.request.ReturnLoanedBookRequest;
 import com.gsilverio.simpleapi.domain.dto.loan.response.CreateLoanResponse;
 import com.gsilverio.simpleapi.repository.LoanRepository;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -23,8 +26,20 @@ public class LoanService {
 
     private final UserService userService;
 
-    public Boolean existsByUserIdAndBookId(Integer userId, Integer bookId){
-        return repository.existsByUserIdAndBookId(userId, bookId);
+    public Boolean existsActiveLoanByUserIdAndBookId(Integer userId, Integer bookId){
+        List<Loan> loans = repository.findByUserIdAndBookId(userId, bookId);
+
+        for (Loan loan : loans){
+            if (loan.getActualReturnDate() == null)
+                return true;
+        }
+
+        return false;
+    }
+
+    public Loan findActiveLoanByUserIdAndBookId(Integer userId, Integer bookId){
+        return repository.findByUserIdAndBookIdAndActualReturnDateIsNull(userId, bookId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "no loan found for the specified user and book"));
     }
 
     @Transactional
@@ -37,7 +52,7 @@ public class LoanService {
         if (!userService.existsById(request.userId()))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
 
-        if (existsByUserIdAndBookId(request.userId(), request.bookId()))
+        if (existsActiveLoanByUserIdAndBookId(request.userId(), request.bookId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "book already loaned to this user");
 
         User user = userService.findById(request.userId());
@@ -56,5 +71,21 @@ public class LoanService {
                 createdLoan.getBook().getId(),
                 createdLoan.getUser().getId()
         );
+    }
+
+    @Transactional
+    public void returnLoanedBook(ReturnLoanedBookRequest request){
+        if (!userService.existsById(request.userId()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
+
+        Book book = bookService.findById(request.bookId());
+
+        book.setAvailableUnits(book.getAvailableUnits() + 1);
+
+        Loan loan = findActiveLoanByUserIdAndBookId(request.userId(), request.bookId());
+
+        loan.setActualReturnDate(LocalDateTime.now());
+
+        repository.save(loan);
     }
 }
